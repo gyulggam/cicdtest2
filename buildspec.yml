@@ -1,0 +1,30 @@
+version: 0.2
+
+phases:
+  install:
+    #Ubuntu 표준 이미지 2.0 이상을 사용하는 경우 런타임 버전을 지정해야 합니다.
+    #런타임 버전을 지정하는 경우 Ubuntu 표준 이미지 2.0 이외의 이미지를 사용하면 빌드에 실패합니다.
+    runtime-versions:
+      nodejs: 12
+      # name: version
+    commands:
+      - "npm install"
+  build:
+    commands:
+      - npm run build
+
+  post_build:
+    commands:
+      - if [ "$CODEBUILD_BUILD_SUCCEEDING" = 0 ] ; then exit 1 ; fi
+      - echo post_build starting...
+      - aws --version
+      # 빌드가 완료되면 기존 s3는 제거하고 새로운 산출물 업로드
+      - aws s3 rm --recursive s3://ci-cd-tutorial-5
+      - aws s3 sync build s3://ci-cd-tutorial-5
+      
+      # cloudFront에 캐시 무효화
+      - aws cloudfront create-invalidation --distribution-id EZIUQ1GUX1J8G  --paths "/*"
+artifacts:
+    files:
+        - "**/*"
+    base-directory: build
