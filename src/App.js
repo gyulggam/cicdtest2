@@ -7,7 +7,7 @@ function App() {
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
-          Edit <code>src/App.js</code> and save to reload. testtest pipeline 까지 해야하니..?
+          Edit <code>src/App.js</code> and save to reload. testtest pipeline 까지 해야하
         </p>
         <a
           className="App-link"
