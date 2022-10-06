@@ -17,7 +17,6 @@ phases:
     commands:
       - if [ "$CODEBUILD_BUILD_SUCCEEDING" = 0 ] ; then exit 1 ; fi
       - echo post_build starting...
-      - aws --version
       # 빌드가 완료되면 기존 s3는 제거하고 새로운 산출물 업로드
       - aws s3 rm --recursive s3://monitoring-ci-cd-tutorial
       - aws s3 sync build s3://monitoring-ci-cd-tutorial
